@@ -1,0 +1,13 @@
+body {
+    /* Font. */
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+
+    display: block;
+    background-color: #212529;
+    color: white;
+    margin: 0;
+}
