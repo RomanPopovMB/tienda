@@ -22,7 +22,7 @@ class Meta:
         self.barcode = barcode
         self.qrCode = qrCode
 
-class Product:
+class Product():
     def __init__(self, id: int, title: str, description: str, category: str, price: float, discountPercentage: float, 
                  rating: float, stock: int, tags: List[str], brand: str, sku: str, weight: float, dimensions: Dimensions, 
                  warrantyInformation: str, shippingInformation: str, availabilityStatus: str, reviews: List[Review], 
@@ -50,7 +50,7 @@ class Product:
         self.images = images
         self.thumbnail = thumbnail
 
-class Catalog:
+class Catalog():
     def __init__(self, products: List[Product]):
         self.products = products
 
