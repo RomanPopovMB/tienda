@@ -56,6 +56,7 @@ La mayoría de interacciones requieren de autorización. Los valores para usuari
 | 2 | client2 | 123 | client |
 | 3 | admin | 123 | admin |
 | 4 | admin2 | 123 | admin |
+
 Obtener todos los usuarios:
 `http://localhost:8000/api/user/`
 ```json
