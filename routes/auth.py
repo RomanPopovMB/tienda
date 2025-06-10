@@ -12,6 +12,17 @@ from models.user import User, UserCreate, UserRead
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
+current_user_id: int
+
+def get_current_user_id():
+    return current_user_id
+
+def set_current_user_id(new_id: int):
+    # Adding global keyword so Python understands I want to
+    # modify the variable created outside the function.
+    global current_user_id
+    current_user_id = new_id
+
 @router.post("/register", response_model=UserRead)
 def register(user: UserCreate, session: Session = Depends(get_session)):
     existing_user = session.query(User).filter(User.name == user.name).first()
@@ -36,8 +47,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = D
         raise HTTPException(status_code = 401, detail = "Invalid credentials.")
     token = create_access_token({"name": user.name}, role = user.role)
     refresh_token = create_refresh_token({"name": user.name})
+    print(f"Updating current user id: {user.id}.")
     user.refresh_token = refresh_token
-    session.add(user)
+    set_current_user_id(user.id)
     session.commit()
     return {
         "access_token": token,

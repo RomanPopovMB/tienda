@@ -17,6 +17,10 @@ async def read_all(session: Session = Depends(get_session), current_user: dict =
 @router.get("/{page},{amount}", response_model = [])
 async def read_all(page: int, amount: int, session: Session = Depends(get_session), current_user: dict = Depends(require_role(["admin", "client"]))):
     try:
+        if page < 1:
+            raise HTTPException(status_code = 400, detail = f"Page should be 1 or more.")
+        if amount < 1:
+            raise HTTPException(status_code = 400, detail = f"Amount should be 1 or more.")
         catalog = await fetch_catalog()
         index = 0
         result = []

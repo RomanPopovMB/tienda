@@ -6,8 +6,8 @@ from fastapi.security import OAuth2PasswordBearer
 from utils.api_client import fetch_catalog
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
-from routes import auth, user, product
-from seeder import seed_data
+from routes import auth, user, product, order, order_content
+from utils.seeder import seed_data
 
 load_dotenv()
 app = FastAPI()
@@ -20,6 +20,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(user.router, prefix="/api/user", tags=["User"])
 app.include_router(product.router, prefix="/api/product", tags=["Product"])
+app.include_router(order.router, prefix="/api/order", tags=["Order"])
+app.include_router(order_content.router, prefix="/api/order_content", tags=["Order content"])
 
 # Try a simple query, and if there is an error, seed data.
 try:
