@@ -26,10 +26,9 @@ Esta práctica tiene un front muy simple hecho con Jinja2. Recoge la informació
 
 ## Instalar y lanzar la aplicación
 1. Clonar el repositorio desde GitHub.
-2. Lanzar la build en Docker.
+2. Lanzar la build en Docker
 `docker-compose up --build`
-
-Si se tienen imágenes antiguas, lanzar la build con el siguiente comando.
+Si se tienen imágenes antiguas, lanzar la build con el siguiente comando
 `docker-compose up --build --remove-orphans`
 
 ## Flujo básico
