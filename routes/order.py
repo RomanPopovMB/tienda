@@ -9,6 +9,10 @@ from crud.order import (
     update_order,
     delete_order,
 )
+from crud.order_content import (
+    get_products_by_content_id,
+    get_amounts_by_content_id
+)
 from auth.dependencies import require_role
 from routes.auth import get_current_user_id
 
@@ -43,8 +47,31 @@ def read(order_id: int, session: Session = Depends(get_session), current_order: 
         raise HTTPException(status_code = 403, detail = "There is no login information. Please log in.")
     if current_order.get("role") != "admin" and order.user_id != current_user_id:
         raise HTTPException(status_code = 403, detail = "Insufficient permissions.")
+
+@router.get("/full/{order_id}", response_model = dict)
+def read(order_id: int, session: Session = Depends(get_session), current_order: dict = Depends(require_role(["admin", "client"]))):
+    order = get_order_by_id(session, order_id)
+    if not order:
+        raise HTTPException(status_code = 404, detail = f"Order with ID {order_id} not found.")
     
-    return order
+    # If not admin, can't see orders if not an owner.
+    current_user_id = get_current_user_id()
+    if current_user_id == None:
+        raise HTTPException(status_code = 403, detail = "There is no login information. Please log in.")
+    if current_order.get("role") != "admin" and order.user_id != current_user_id:
+        raise HTTPException(status_code = 403, detail = "Insufficient permissions.")
+    
+    products = get_products_by_content_id(session, order.id)
+    amounts = get_amounts_by_content_id(session, order.id)
+
+    # Returns a dict with the product IDs and amounts. Would have liked to add
+    # the full product description with some extra time.
+    result = {
+        "products": products,
+        "amounts": amounts
+    }
+
+    return result
 
 @router.put("/{order_id}", response_model = Order)
 def update(

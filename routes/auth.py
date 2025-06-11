@@ -15,7 +15,11 @@ templates = Jinja2Templates(directory="templates")
 current_user_id: int
 
 def get_current_user_id():
-    return current_user_id
+    global current_user_id
+    try:
+        return current_user_id
+    except:
+        return None
 
 def set_current_user_id(new_id: int):
     # Adding global keyword so Python understands I want to

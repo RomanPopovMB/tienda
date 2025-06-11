@@ -13,6 +13,22 @@ def get_order_contents(session: Session):
 def get_order_content_by_id(session: Session, order_content_id: int):
     return session.get(OrderContent, order_content_id)
 
+def get_products_by_content_id(session: Session, order_id: int):
+    statement = select(OrderContent).where(OrderContent.order_id == order_id)
+    orders = session.exec(statement).all()
+    products = []
+    for order in orders:
+        products.append(order.product_id)
+    return products
+
+def get_amounts_by_content_id(session: Session, order_id: int):
+    statement = select(OrderContent).where(OrderContent.order_id == order_id)
+    orders = session.exec(statement).all()
+    amounts = []
+    for order in orders:
+        amounts.append(order.product_amount)
+    return amounts
+
 def update_order_content(session: Session, order_content_id: int, order_content_data: dict):
     order_content = session.get(OrderContent, order_content_id)
     if not order_content:
